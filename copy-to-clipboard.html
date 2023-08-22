@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clipboard MIME Copier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 20px;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Clipboard MIME Copier</h2>
+
+<label for="mimeType">MIME Type:</label>
+<textarea id="mimeType" rows="1">text/html</textarea>
+
+<label for="contents">Copy-Paste Contents:</label>
+<textarea id="contents" rows="50"></textarea>
+
+<button onclick="initiateCopy()">Copy to Clipboard</button>
+
+<script>
+    async function copyHtmlToClipboard(mimeType, htmlString) {
+        try {
+            const data = { [mimeType]: new Blob([htmlString], { type: mimeType }) };
+            await navigator.clipboard.write([new ClipboardItem(data)]);
+            console.log('Content copied to clipboard with MIME type:', mimeType);
+        } catch (err) {
+            console.error('Failed to copy content: ', err);
+        }
+    }
+
+    function initiateCopy() {
+        const mimeType = document.getElementById('mimeType').value;
+        const contents = document.getElementById('contents').value;
+        copyHtmlToClipboard(mimeType, contents);
+    }
+</script>
+
+</body>
+</html>
+
